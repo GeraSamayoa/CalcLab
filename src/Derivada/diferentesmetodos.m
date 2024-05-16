@@ -1,21 +1,40 @@
-% Define la variable simbólica
-syms x;
-
-% Pide al usuario que ingrese la función de la que quiere calcular la derivada
-funcion_usuario = input('Introduce la función f(x): ', 's');
-funcion_usuario = str2sym(funcion_usuario);
-
-% Calcula la derivada de la función
-derivada = diff(funcion_usuario, x);
-
-% Simplifica y muestra la derivada
-derivada_simplificada = simplify(derivada);
-disp(['La derivada de la función es: ', char(derivada_simplificada)]);
-
-% Si el usuario desea evaluar la derivada en un punto específico
-punto_evaluacion = input('Si deseas evaluar la derivada en un punto específico, introduce el valor de x (o deja en blanco para omitir): ', 's');
-if ~isempty(punto_evaluacion)
-    punto_evaluacion = str2double(punto_evaluacion);
-    valor_derivada = eval(subs(derivada_simplificada, x, punto_evaluacion));
-    disp(['El valor de la derivada en x = ', num2str(punto_evaluacion), ' es: ', num2str(valor_derivada)]);
+function dy = calcularDerivadaMejorada()
+    % Esta función mejorada solicita al usuario que ingrese una función,
+    % verifica si la entrada es válida y calcula su derivada.
+    
+    syms x;
+    correcto = false;
+    
+    while ~correcto
+        try
+            % Solicitar al usuario que ingrese la función
+            f_usuario = input('Ingresa la función f(x): ', 's');
+            f_simbolica = str2sym(f_usuario);
+            
+            % Verificar si la función es válida
+            assert(~isempty(symvar(f_simbolica)), 'Error: Debes ingresar una función de x.');
+            
+            % Calcular la derivada
+            dy = diff(f_simbolica, x);
+            
+            % Mostrar la derivada al usuario
+            fprintf('La derivada de f(x) = %s es: %s\n', f_usuario, char(dy));
+            correcto = true;
+            
+        catch ME
+            % Manejar errores de entrada y mostrar mensaje adecuado al usuario
+            switch ME.identifier
+                case 'symbolic:sym:sym:AssumptionsNotMet'
+                    fprintf('Error: La entrada no es reconocida como una función matemática válida.\n');
+                case 'MATLAB:assertion:failed'
+                    fprintf('%s\n', ME.message);
+                otherwise
+                    fprintf('Error desconocido. Por favor, intenta de nuevo.\n');
+            end
+        end
+    end
 end
+
+% Ejemplo de uso:
+% Simplemente llama a la función y sigue las instrucciones en la consola
+calcularDerivadaMejorada()
