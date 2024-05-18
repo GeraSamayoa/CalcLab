@@ -30,6 +30,10 @@ function dy = calcularDerivadaMejorada()
             % Mostrar la derivada simplificada al usuario
             fprintf('La derivada simplificada de f(x) = %s es: %s\n', f_usuario, char(dy_simplificada));
             
+            % Punto de detención: pausa la ejecución y espera que el usuario presione una tecla
+            disp('Presiona una tecla para continuar...');
+            pause; % La ejecución se detiene aquí hasta que se presione una tecla
+            
             % Restaurar el formato de visualización a 'short'
             format short;
             
