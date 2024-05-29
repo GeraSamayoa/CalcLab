@@ -21,7 +21,7 @@ for i = 1:num_areas
     n = input('Ingresa el número de subintervalos (n): ');
     
     % Ancho de cada subintervalo
-    dx = (b  a) / n;
+    dx = (b - a) / n;
     
     % Calcula el área bajo la curva para el área actual
     area_actual = 0;
