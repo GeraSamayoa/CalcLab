@@ -1,6 +1,6 @@
 function dy = calcularDerivadaMejorada()
     % Esta función mejorada calcula la derivada de funciones que pueden contener
-    % constantes, potencias, funciones trigonométricas y raíces, además de simplificar el resultado.
+    % constantes, potencias, funciones trigonométricas y raíces, además de simplificar el resultado
     
     syms x;
     correcto = false;
