@@ -1,27 +1,52 @@
-% Solicitar al usuario que ingrese la función
-funcion = input('Ingresa la función en términos de x: ', 's');
-f = str2func(['@(x)' funcion]);
+% Solicita al usuario ingresar el número de áreas a calcular
+num_areas = input('Ingresa el número de áreas a calcular: ');
 
-% Solicitar al usuario que ingrese los límites de integración
-a = input('Ingresa el límite inferior de integración: ');
-b = input('Ingresa el límite superior de integración: ');
+% Inicializa el área total
+area_total = 0;
 
-% Definir el rango de x
-x = a:0.01:b;
+% Calcula el área para cada función y rango
+for i = 1:num_areas
+    fprintf('Área %d:\n', i);
+    
+    % Solicita al usuario ingresar la función f(x)
+    prompt = 'Ingresa la función f(x): ';
+    funcion = input(prompt, 's');
+    f = str2func(['@(x)' funcion]);
+    
+    % Solicita al usuario ingresar los límites de inicio y fin
+    a = input('Ingresa el límite inferior (a): ');
+    b = input('Ingresa el límite superior (b): ');
+    
+    % Número de subintervalos (ajústalo según la precisión deseada)
+    n = 1000;
+    % Ancho de cada subintervalo
+    dx = (b - a) / n;
+    
+    % Calcula el área bajo la curva para el área actual (tomando el valor absoluto)
+    area_actual = 0;
+    for j = 0:n-1
+        area_actual = area_actual + abs(f(a + j * dx)) * dx;
+    end
+    
+    % Muestra el resultado del área actual
+    fprintf('El área bajo la curva f(x) = %s en el intervalo [%g, %g] es aproximadamente %g.\n', funcion, a, b, area_actual);
+    
+    % Grafica la función en el mismo gráfico
+    x_vals = linspace(a, b, 1000);
+    y_vals = f(x_vals);
+    hold on;
+    plot(x_vals, y_vals, 'LineWidth', 2);
+    
+    % Agrega el área actual al área total
+    area_total = area_total + area_actual;
+end
 
-% Calcular el valor de y
-y = f(x);
+% Configura la leyenda y muestra el área total
+xlabel('x');
+ylabel('f(x)');
+title('Áreas bajo la curva utilizando el Método de Riemann');
+legend('Función 1', 'Función 2', 'Función 3'); % Personaliza las etiquetas según tus funciones
+hold off;
 
-% Calcular el área bajo la curva usando la regla del trapecio
-area = trapz(x, y);
-
-% Mostrar el área bajo la curva
-disp(['El área bajo la curva es: ', num2str(area)])
-
-% Crear la gráfica
-figure
-plot(x, y, 'LineWidth', 2)
-xlabel('x')
-ylabel('y')
-title('Gráfica de la función y su área bajo la curva')
-grid on
+% Muestra el área total
+fprintf('El área total de las %d áreas calculadas es aproximadamente %g.\n', num_areas, area_total);
